@@ -19,6 +19,7 @@ playwright-report/
 blob-report/
 playwright/.cache/
 coverage/
+demo-out/
 
 # OS and editor noise
 .DS_Store
