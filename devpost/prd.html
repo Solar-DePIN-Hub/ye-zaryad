@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Є заряд — Product requirements</title>
+<style>
+  :root {
+    --bg: #0e1726; --card: #162033; --text: #f4efe6; --muted: #c4b8a5;
+    --accent: #ffb547; --danger: #ff6b6b; --ok: #3ddc97; --line: #2a384f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 18px/1.5 Georgia, Palatino, serif; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; }
+  p.kicker { letter-spacing: 0.14em; text-transform: uppercase; font-family: "Segoe UI", sans-serif; font-size: 12px; color: var(--accent); }
+  h1 { font-weight: normal; font-size: 42px; margin: 0; }
+  h2 { font-weight: normal; margin-top: 36px; }
+  a { color: var(--accent); }
+  .note { color: var(--muted); font-size: 15px; }
+  svg { width: 100%; height: auto; }
+  .steps { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 20px; }
+  .steps button {
+    background: var(--card); color: var(--text); border: 1px solid var(--line);
+    border-radius: 999px; padding: 8px 14px; font: 15px "Segoe UI", sans-serif; cursor: pointer;
+  }
+  .steps button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  article.panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; min-height: 140px; }
+  article.panel h3 { margin: 0 0 8px; font-weight: normal; color: var(--accent); }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin: 10px 0; }
+  summary { cursor: pointer; font-family: "Segoe UI", sans-serif; color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">PRD · status approved · Markdown is canonical</p>
+  <h1>What someone sees and does</h1>
+  <p class="note">Companion to <a href="prd.md">prd.md</a>. Scope said "a list like charge the power bank by 14:00, and a red warning." This page is that path, step by step. Decisions were relayed from Vadym. Assumptions are in the Markdown file, not hidden here.</p>
+
+  <h2>The path</h2>
+  <svg viewBox="0 0 860 120" role="img" aria-label="Seven steps from open, to hours, to kit, to the red warning, to the day, to the list, to offline.">
+    <g font-family="Segoe UI, sans-serif" font-size="12" fill="#f4efe6">
+      <rect x="8" y="36" width="100" height="48" rx="10" fill="#162033" stroke="#ffb547"/><text x="58" y="64" text-anchor="middle">1 Open</text>
+      <rect x="128" y="36" width="100" height="48" rx="10" fill="#162033" stroke="#ffb547"/><text x="178" y="64" text-anchor="middle">2 Hours</text>
+      <rect x="248" y="36" width="100" height="48" rx="10" fill="#162033" stroke="#ffb547"/><text x="298" y="64" text-anchor="middle">3 Kit</text>
+      <rect x="368" y="36" width="110" height="48" rx="10" fill="#3a1518" stroke="#ff6b6b"/><text x="423" y="64" text-anchor="middle">4 What dies</text>
+      <rect x="498" y="36" width="100" height="48" rx="10" fill="#162033" stroke="#ffb547"/><text x="548" y="64" text-anchor="middle">5 The day</text>
+      <rect x="618" y="36" width="110" height="48" rx="10" fill="#162033" stroke="#3ddc97"/><text x="673" y="64" text-anchor="middle">6 Charge by</text>
+      <rect x="748" y="36" width="100" height="48" rx="10" fill="#162033" stroke="#ffb547"/><text x="798" y="64" text-anchor="middle">7 Again</text>
+    </g>
+  </svg>
+
+  <div class="steps" role="group" aria-label="Journey steps">
+    <button type="button" aria-pressed="true" data-step="0">1 Open</button>
+    <button type="button" aria-pressed="false" data-step="1">2 Hours</button>
+    <button type="button" aria-pressed="false" data-step="2">3 Kit</button>
+    <button type="button" aria-pressed="false" data-step="3">4 What dies</button>
+    <button type="button" aria-pressed="false" data-step="4">5 The day</button>
+    <button type="button" aria-pressed="false" data-step="5">6 Charge by</button>
+    <button type="button" aria-pressed="false" data-step="6">7 Again</button>
+  </div>
+  <article class="panel" id="panel">
+    <h3 id="panel-title">1 Open</h3>
+    <p id="panel-body">A dark page. The name «Є заряд». No warning yet, because there is nothing to calculate.</p>
+  </article>
+
+  <h2>Empty, error, and success</h2>
+  <details open>
+    <summary>Before they add anything</summary>
+    <p>Empty text box, no chips, no kit, no red line. The page tells them to paste or tap hours, then add what they own.</p>
+  </details>
+  <details>
+    <summary>A line that cannot be read</summary>
+    <p>That line is highlighted with a hint. Every line that could be read still becomes an outage.</p>
+  </details>
+  <details>
+    <summary>The battery will not last</summary>
+    <p>Red warning. It names what runs out, the time, and what to charge first.</p>
+  </details>
+  <details>
+    <summary>How we know the cool moment happened</summary>
+    <p>A list item in the form "Charge power bank by 14:00", a tick, and a downloaded calendar file. The red line is present for the sample day with the typical kit.</p>
+  </details>
+
+  <h2>Not in this proof</h2>
+  <p>No language switch. No accounts. No live utility feed. No logos. Ukrainian copy is deferred, with the sentences already gathered in one module.</p>
+</main>
+<script>
+  const steps = [
+    ["1 Open", "A dark page. The name «Є заряд». No warning yet, because there is nothing to calculate."],
+    ["2 Hours", "They paste a message, including forms like 08:00–12:00 or з 16:00 до 20:00, or they tap hours. Chips show what was understood."],
+    ["3 Kit", "They add the phone, power bank, laptop, router, flashlight, and optionally a charging station. Numbers are typical estimates and can be edited. Higher in the list is kept alive first."],
+    ["4 What dies", "If something will not last, a red line says what runs out and when, and what to charge first. If nothing runs out, the page says so calmly."],
+    ["5 The day", "A 24-hour bar and a simple battery line. Tapping an outage shows that outage only."],
+    ["6 Charge by", "The list he asked for: Charge power bank by 14:00, with a tick, and one calendar file of reminders."],
+    ["7 Again", "Reload keeps the hours, the kit, and the ticks. After the first load, it still opens with no internet."]
+  ];
+  const buttons = document.querySelectorAll(".steps button");
+  const title = document.getElementById("panel-title");
+  const body = document.getElementById("panel-body");
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      buttons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+      button.setAttribute("aria-pressed", "true");
+      const pair = steps[Number(button.dataset.step)];
+      title.textContent = pair[0];
+      body.textContent = pair[1];
+    });
+  });
+</script>
+<noscript>
+  <p>Steps, if scripts are off: 1 open the dark page; 2 paste or tap hours; 3 add the kit; 4 read the red warning; 5 look at the day; 6 follow "Charge … by …" and download the calendar file; 7 come back, including offline.</p>
+</noscript>
+</body>
+</html>

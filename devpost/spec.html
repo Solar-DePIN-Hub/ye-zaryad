@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Є заряд — Technical spec</title>
+<style>
+  :root {
+    --bg: #0e1726; --card: #162033; --text: #f4efe6; --muted: #c4b8a5;
+    --accent: #ffb547; --danger: #ff6b6b; --ok: #3ddc97; --line: #2a384f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 18px/1.5 Georgia, Palatino, serif; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 20px 80px; }
+  p.kicker { letter-spacing: 0.14em; text-transform: uppercase; font-family: "Segoe UI", sans-serif; font-size: 12px; color: var(--accent); }
+  h1, h2 { font-weight: normal; }
+  a { color: var(--accent); }
+  .note { color: var(--muted); font-size: 15px; }
+  svg { width: 100%; height: auto; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin: 10px 0; }
+  summary { cursor: pointer; font-family: "Segoe UI", sans-serif; color: var(--accent); }
+  code { font-family: ui-monospace, monospace; font-size: 0.9em; color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Spec · status approved · Markdown is canonical</p>
+  <h1>How the page is built</h1>
+  <p class="note">Companion to <a href="spec.md">spec.md</a>. The stack was set by the build brief, not by Vadym. The product decisions inside it are his relayed answers.</p>
+
+  <h2>One journey through the pieces</h2>
+  <svg viewBox="0 0 860 300" role="img" aria-label="Data flow from paste or tap, through the schedule reader and the kit, into the 15-minute simulation, then out to the warning, the chart, and the calendar file. A sticky note saves the plan. No server.">
+    <g font-family="Georgia, serif" font-size="15" fill="#f4efe6">
+      <rect x="20" y="24" width="180" height="64" rx="12" fill="#162033" stroke="#ffb547"/>
+      <text x="110" y="62" text-anchor="middle">Paste or tap hours</text>
+      <rect x="20" y="120" width="180" height="64" rx="12" fill="#162033" stroke="#ffb547"/>
+      <text x="110" y="158" text-anchor="middle">Kit of devices</text>
+      <path d="M200 56 H250 V188 H200" fill="none" stroke="#ffb547" stroke-width="2"/>
+      <rect x="250" y="70" width="200" height="100" rx="12" fill="#162033" stroke="#f4efe6"/>
+      <text x="350" y="112" text-anchor="middle">15-minute</text>
+      <text x="350" y="136" text-anchor="middle">simulation</text>
+      <path d="M450 120 H510" stroke="#ffb547" stroke-width="2"/>
+      <rect x="510" y="20" width="320" height="52" rx="12" fill="#3a1518" stroke="#ff6b6b"/>
+      <text x="670" y="52" text-anchor="middle">Red warning: what dies, charge this first</text>
+      <rect x="510" y="88" width="320" height="52" rx="12" fill="#162033" stroke="#ffb547"/>
+      <text x="670" y="120" text-anchor="middle">Day bar and battery line</text>
+      <rect x="510" y="156" width="320" height="52" rx="12" fill="#162033" stroke="#3ddc97"/>
+      <text x="670" y="188" text-anchor="middle">Charge-by list and .ics file</text>
+      <rect x="250" y="210" width="200" height="64" rx="12" fill="#162033" stroke="#c4b8a5"/>
+      <text x="350" y="248" text-anchor="middle">localStorage</text>
+      <text x="670" y="248" text-anchor="middle" fill="#c4b8a5">No server. No key.</text>
+    </g>
+  </svg>
+
+  <h2>Pieces, and the PRD section each one serves</h2>
+  <details open>
+    <summary>Schedule parser and hour toggles — Schedule hours</summary>
+    <p>Pure functions. Text or a tapped hour becomes merged ranges in minutes from midnight. Unreadable lines are returned beside the ranges, not thrown away. File: <code>src/domain/parseSchedule.ts</code>.</p>
+  </details>
+  <details>
+    <summary>Kit editor — The energy kit</summary>
+    <p>Presets are typical estimates. List order is who gets scarce energy first. File: <code>src/components/KitEditor.tsx</code>, numbers in <code>src/domain/presets.ts</code>.</p>
+  </details>
+  <details>
+    <summary>Energy simulation — What will die and when</summary>
+    <p>96 steps of 15 minutes. Charge on grid power, draw on outage, own battery then shared supply. This is the kernel and it is not faked. File: <code>src/domain/simulate.ts</code>.</p>
+  </details>
+  <details>
+    <summary>Warning, day bar, battery chart — the day on screen</summary>
+    <p>Rendered from the simulation result. The chart is inline SVG. Files under <code>src/components/</code>.</p>
+  </details>
+  <details>
+    <summary>Action list and calendar file — The charge-by list</summary>
+    <p>"Charge {name} by {time}" plus a CRLF <code>.ics</code> with one event and reminder per line. Built in the browser. File: <code>src/domain/ics.ts</code>.</p>
+  </details>
+  <details>
+    <summary>Saved kit and offline shell</summary>
+    <p>Key <code>ye-zaryad:v1</code>. The service worker is generated at build time by vite-plugin-pwa. English sentences live only in <code>src/strings.ts</code>.</p>
+  </details>
+
+  <h2>Try it</h2>
+  <p><code>npm install</code> then <code>npm run dev</code>. Tests: <code>npm test</code> and <code>npm run test:e2e</code>. Optional site: GitHub Pages at <code>/ye-zaryad/</code> after an organization owner enables Pages.</p>
+</main>
+</body>
+</html>
