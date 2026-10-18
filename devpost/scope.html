@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Є заряд — Scope</title>
+<style>
+  :root {
+    --bg: #0e1726;
+    --card: #162033;
+    --text: #f4efe6;
+    --muted: #c4b8a5;
+    --accent: #ffb547;
+    --danger: #ff6b6b;
+    --ok: #3ddc97;
+    --line: #2a384f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 18px/1.5 Georgia, "Iowan Old Style", Palatino, serif;
+  }
+  main { max-width: 840px; margin: 0 auto; padding: 48px 20px 80px; }
+  p.kicker { letter-spacing: 0.14em; text-transform: uppercase; font-family: "Segoe UI", sans-serif; font-size: 12px; color: var(--accent); margin: 0 0 8px; }
+  h1 { font-weight: normal; font-size: 48px; margin: 0 0 8px; }
+  h2 { font-weight: normal; font-size: 28px; margin: 40px 0 8px; }
+  .lede { font-size: 22px; max-width: 38em; }
+  .note { color: var(--muted); font-size: 15px; }
+  a { color: var(--accent); }
+  svg { width: 100%; height: auto; display: block; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin: 12px 0; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; margin: 10px 0; }
+  summary { cursor: pointer; color: var(--accent); font-family: "Segoe UI", sans-serif; }
+  ul { margin: 8px 0 0; padding-left: 1.2em; }
+  .tag { display: inline-block; border: 1px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 2px 10px; font-family: "Segoe UI", sans-serif; font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Scope · status approved · Markdown is canonical</p>
+  <h1>Є заряд</h1>
+  <p class="lede">A calm planner that tells you what will go dead in a blackout, and what to charge by when.</p>
+  <p class="note">Decisions were relayed from Vadym Bilobrovets. This page is a visual companion to <a href="scope.md">scope.md</a>. He has not separately reviewed the English wording. Assumptions are marked.</p>
+
+  <h2>Who does what</h2>
+  <svg viewBox="0 0 840 280" role="img" aria-label="Diagram: two people put in outage hours and devices, the kernel says what dies and what to charge, the proof is a list and a reminder.">
+    <rect x="16" y="36" width="190" height="88" rx="14" fill="#162033" stroke="#ffb547"/>
+    <text x="111" y="70" fill="#f4efe6" font-size="15" text-anchor="middle" font-family="Georgia, serif">Person in an apartment</text>
+    <text x="111" y="94" fill="#c4b8a5" font-size="13" text-anchor="middle" font-family="Georgia, serif">charging everything at once</text>
+    <rect x="16" y="150" width="190" height="88" rx="14" fill="#162033" stroke="#ffb547"/>
+    <text x="111" y="184" fill="#f4efe6" font-size="15" text-anchor="middle" font-family="Georgia, serif">Working from home</text>
+    <text x="111" y="208" fill="#c4b8a5" font-size="13" text-anchor="middle" font-family="Georgia, serif">afraid of losing laptop</text>
+    <text x="111" y="226" fill="#c4b8a5" font-size="13" text-anchor="middle" font-family="Georgia, serif">and internet</text>
+    <path d="M206 80 H300" stroke="#ffb547" stroke-width="2"/>
+    <path d="M206 194 H300" stroke="#ffb547" stroke-width="2"/>
+    <rect x="300" y="78" width="220" height="120" rx="14" fill="#162033" stroke="#f4efe6"/>
+    <text x="410" y="118" fill="#ffb547" font-size="16" text-anchor="middle" font-family="Georgia, serif">The kernel</text>
+    <text x="410" y="146" fill="#f4efe6" font-size="14" text-anchor="middle" font-family="Georgia, serif">What dies, and when</text>
+    <text x="410" y="168" fill="#f4efe6" font-size="14" text-anchor="middle" font-family="Georgia, serif">What to charge, by when</text>
+    <path d="M520 138 H610" stroke="#ffb547" stroke-width="2"/>
+    <rect x="610" y="78" width="210" height="120" rx="14" fill="#162033" stroke="#3ddc97"/>
+    <text x="715" y="118" fill="#3ddc97" font-size="16" text-anchor="middle" font-family="Georgia, serif">Proof it works</text>
+    <text x="715" y="146" fill="#f4efe6" font-size="14" text-anchor="middle" font-family="Georgia, serif">Charge power bank</text>
+    <text x="715" y="168" fill="#f4efe6" font-size="14" text-anchor="middle" font-family="Georgia, serif">by 14:00 + reminder</text>
+  </svg>
+
+  <h2>Now, later, cut</h2>
+  <details open>
+    <summary>Now — the proof of concept</summary>
+    <ul>
+      <li>Paste outage text and tap hours on a 24-hour bar.</li>
+      <li>Phone, power bank, laptop, router, charging station, flashlight.</li>
+      <li>What dies and when. What to charge by when. A red warning that says what to charge first.</li>
+      <li>A calendar file. The page still opens offline after the first load.</li>
+      <li>English on screen. Sentences kept in one module.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Later</summary>
+    <ul>
+      <li>Ukrainian interface, when he wants it.</li>
+      <li>A live schedule only if there is a public source he is allowed to use.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Cut, and why</summary>
+    <ul>
+      <li>UA/EN toggle — he did not choose it.</li>
+      <li>Accounts, a server, live utility downloads — a pasted day is enough to prove the kernel.</li>
+      <li>Power-company logos and brand names on screen.</li>
+    </ul>
+  </details>
+
+  <h2>What he asked to feel</h2>
+  <p><span class="tag">Dark</span> <span class="tag">Calm</span> <span class="tag">Yellow-orange, like light in the dark</span></p>
+  <p class="note">Exact colours and the font are assumptions. They are listed in scope.md.</p>
+</main>
+</body>
+</html>

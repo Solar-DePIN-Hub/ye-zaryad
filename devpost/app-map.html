@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Є заряд — app map</title>
+<style>
+  :root { --bg:#0e1726; --card:#162033; --text:#f4efe6; --muted:#c4b8a5; --accent:#ffb547; --line:#2a384f; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:17px/1.5 Georgia, Palatino, serif; }
+  main { max-width:760px; margin:0 auto; padding:36px 18px 64px; }
+  h1,h2 { font-weight:normal; }
+  a { color:var(--accent); }
+  code { font-family:ui-monospace, monospace; color:var(--accent); font-size:0.92em; }
+  svg { width:100%; height:auto; }
+  details { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin:8px 0; }
+  summary { cursor:pointer; font-family:"Segoe UI", sans-serif; }
+  .note { color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Є заряд — where things live</h1>
+  <p>A page that turns outage hours and a short kit into two results: what runs out, and what to charge by when. This map is a snapshot of the finished code. It can drift if the files move.</p>
+  <p class="note">Reference route only. It was not walked live with Vadym.</p>
+
+  <h2>One action</h2>
+  <svg viewBox="0 0 720 160" role="img" aria-label="Pasted hours go through parseSchedule, then simulate, then the red warning.">
+    <g font-family="Georgia, serif" font-size="14" fill="#f4efe6">
+      <rect x="8" y="40" width="150" height="70" rx="12" fill="#162033" stroke="#ffb547"/>
+      <text x="83" y="80" text-anchor="middle">Pasted hours</text>
+      <path d="M158 75 H190" stroke="#ffb547"/>
+      <rect x="190" y="40" width="160" height="70" rx="12" fill="#162033" stroke="#f4efe6"/>
+      <text x="270" y="72" text-anchor="middle">parseSchedule</text>
+      <text x="270" y="92" text-anchor="middle" fill="#c4b8a5" font-size="12">parseSchedule.ts</text>
+      <path d="M350 75 H382" stroke="#ffb547"/>
+      <rect x="382" y="40" width="140" height="70" rx="12" fill="#162033" stroke="#f4efe6"/>
+      <text x="452" y="72" text-anchor="middle">simulate</text>
+      <text x="452" y="92" text-anchor="middle" fill="#c4b8a5" font-size="12">simulate.ts</text>
+      <path d="M522 75 H554" stroke="#ffb547"/>
+      <rect x="554" y="40" width="156" height="70" rx="12" fill="#3a1518" stroke="#ff6b6b"/>
+      <text x="632" y="80" text-anchor="middle">Red warning</text>
+    </g>
+  </svg>
+
+  <h2>Route</h2>
+  <details open>
+    <summary>1. Read the hours — <code>parseSchedule</code></summary>
+    <p><code>src/domain/parseSchedule.ts</code>, function <code>parseSchedule</code>. Text in, merged minute ranges out, plus any line that could not be read. Search for <code>SAMPLE_SCHEDULE</code> to see the demo day.</p>
+  </details>
+  <details>
+    <summary>2. Walk 24 hours — <code>simulate</code></summary>
+    <p><code>src/domain/simulate.ts</code>, function <code>simulate</code>. Ninety-six steps of 15 minutes. This is the part that decides a device has run out. Preset numbers are in <code>src/domain/presets.ts</code>.</p>
+  </details>
+  <details>
+    <summary>3. Show the sentence — <code>Warnings</code></summary>
+    <p><code>src/components/Warnings.tsx</code>, function <code>Warnings</code>. The red block is the sentence the tests look for. The charge lines are <code>actionHeadline</code> in <code>src/domain/actions.ts</code>, and the file is <code>buildIcs</code> in <code>src/domain/ics.ts</code>.</p>
+  </details>
+
+  <h2>To change this, start here</h2>
+  <ul>
+    <li>Wording on screen: <code>src/strings.ts</code> only.</li>
+    <li>A preset wattage: <code>src/domain/presets.ts</code>.</li>
+    <li>What "runs out" means: <code>simulate</code> in <code>src/domain/simulate.ts</code>, then <code>tests/simulate.test.ts</code>.</li>
+    <li>Colours: the variables at the top of <code>src/styles.css</code>.</li>
+  </ul>
+
+  <h2>A practice to reuse</h2>
+  <p>The product note says a red line should contain a time and the words that something runs out (<code>devpost/prd.md</code>, "What will die and when"). <code>tests/e2e.spec.ts</code> looks for that sentence, and <code>tests/plan.test.ts</code> checks the sample day both without and with the charging station. Writing the sentence you expect to see, then pointing a test at it, is the same move on another project: the check fails when the page stops saying the thing you promised.</p>
+
+  <h2>Run it again</h2>
+  <p><code>npm install</code> then <code>npm run dev</code>. Optional clock: <code>?now=12:00</code>.</p>
+</main>
+</body>
+</html>
