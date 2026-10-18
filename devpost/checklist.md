@@ -13,7 +13,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
 
 ## Slices
 
-- [ ] **1. Paste or tap outage hours and see them**
+- [x] **1. Paste or tap outage hours and see them**
   Becomes usable: A running page where pasted text or a tapped hour shows outage chips, and a bad line is marked without dropping the good lines.
   Why now: The schedule is the input the kernel needs, and the Ukrainian-format parser is the risky read. Scaffolding lives in this slice so there is something to open.
   PRD ref: `prd.md > Schedule hours`, `prd.md > The Core Journey`
@@ -23,7 +23,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
   Learner check: Open the page, paste a line, tap an hour, and see whether the chips match the hours you meant.
   Commit: `Show outage hours from pasted text or a tapped hour`
 
-- [ ] **2. Add the kit from presets**
+- [x] **2. Add the kit from presets**
   Becomes usable: Buttons add the phone, power bank, laptop, router, charging station, and flashlight. Numbers are labelled as typical estimates and can be edited. Rows move up and down and can be removed.
   Why now: The simulation needs a kit, and the presets are the second place a wrong number would hide. Land them before any death calculation.
   PRD ref: `prd.md > The energy kit`
@@ -33,7 +33,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
   Learner check: Add the typical kit, change one number, and confirm the label still says it is an estimate.
   Commit: `Add an editable kit of the six devices`
 
-- [ ] **3. See what dies and when**
+- [x] **3. See what dies and when**
   Becomes usable: With hours and a kit, a red warning names what runs out, the time, and what to charge first. A day with no outages does not invent a death.
   Why now: This is the kernel. It should be visible as soon as the inputs exist, not after the chart and the calendar file.
   PRD ref: `prd.md > What will die and when`
@@ -43,7 +43,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
   Learner check: Load the sample day, add the typical kit, and read the red line. Say whether the time and the "charge this first" device match what you expected.
   Commit: `Warn what runs out and what to charge first`
 
-- [ ] **4. See the day bar and the battery line**
+- [x] **4. See the day bar and the battery line**
   Becomes usable: A 24-hour bar shows grid-on, outage, and charge stretches, with a now marker. An SVG line shows battery level. Tapping an outage shows that outage's breakdown.
   Why now: The warning already answers "what dies." The picture makes the same result glanceable, which is the rest of the day view.
   PRD ref: `prd.md > The day timeline`
@@ -53,7 +53,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
   Learner check: Look at the bar and the line and say whether "on" and "off" are easy to tell apart.
   Commit: `Draw the day bar and the battery line`
 
-- [ ] **5. Get the charge-by list and a calendar file**
+- [x] **5. Get the charge-by list and a calendar file**
   Becomes usable: Lines like "Charge power bank by 14:00" with ticks, and a button that downloads an `.ics` file with a reminder per line.
   Why now: This is the moment he named. It depends on the simulation's charge deadlines, which slice 3 already computes.
   PRD ref: `prd.md > The charge-by list`
@@ -63,7 +63,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
   Learner check: Read one charge line aloud. Download the file and confirm it is a calendar file, not a screenshot.
   Commit: `Add the charge-by list and calendar reminders`
 
-- [ ] **6. Remember the plan and open it offline**
+- [x] **6. Remember the plan and open it offline**
   Becomes usable: Hours, kit, and ticks survive a reload. After one online load, a reload with no network still shows the page.
   Why now: Persistence and the service worker wrap a finished journey. Doing them earlier would cache a half-built page.
   PRD ref: `prd.md > Offline and reminders`, `prd.md > States and Boundaries`
@@ -75,23 +75,29 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 3, the red warning on the sample day
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Early usable behavior explored — after the kernel was on screen, the agent loaded the sample day at 12:00 and read the red warning. Vadym was not in the session.
+- [x] Final kick-the-tires exploration and feedback completed — agent pass only: unit tests, Playwright (including offline reload), and screenshots of empty, warning, and all-clear. Vadym has not done this himself.
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
+
+Agent verification is done and the checks below passed. Vadym has not confirmed the proof of concept in person. That confirmation is still his, and it is listed in `devpost/submission-notes.md`. No product change was requested during the agent pass. One warning-list cleanup is recorded under Revisions.
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: not started
-Route and stops: not started
-Edit outcome: not started
-Reflection: not started
-Activity mode: not started
+Activity and evidence: reference route only. Vadym's learning note was to move his own work onto what an AI can actually do. The map follows one action (pasted hours → red warning) through `parseSchedule`, `simulate`, and `Warnings`, and points at the test that checks the sentence. He was not here to walk it, so this is not claimed as his practice.
+Route and stops: `src/domain/parseSchedule.ts` (`parseSchedule`), `src/domain/simulate.ts` (`simulate`), `src/components/Warnings.tsx` (`Warnings`). Reference route, not toured live.
+Edit outcome: not applicable. No live edit was offered.
+Reflection: the optional question is left for Vadym in `devpost/submission-notes.md`. It is not answered here, and it is not written into the public map.
+Activity mode: reference route. Learner absent.
 
 ## Revisions
+
+- The six slices share one page, so they landed in one application commit rather than six checkouts. The `Commit:` lines above are the slice notes. The git history still separates the skill pack, the planning docs, the app, and the shipping files.
+- Warning lines listed the same device once per outage, including the next morning. The red block now keeps the first time each device runs out. The simulation itself did not change. `tests/plan.test.ts` still requires a death without the station and none with it.
+- Fast mode and the hands-on boxes were completed by the agent. Vadym did not click through the page.
