@@ -1,5 +1,6 @@
 /**
- * Silent walkthrough. No voice, no music, no utility names.
+ * Silent walkthrough, timed to docs/video-narration.md. The app is on screen from the first frame.
+ * No voice, no music, no utility names.
  * Requires a built preview on port 4173 (`npm run build && npm run preview -- --host 127.0.0.1 --port 4173`).
  * Writes a webm next to the srt draft. Convert with ffmpeg if you need mp4.
  */
@@ -12,7 +13,8 @@ await mkdir(outDir, { recursive: true });
 
 const browser = await chromium.launch();
 const context = await browser.newContext({
-  viewport: { width: 1920, height: 1080 },
+  viewport: { width: 1280, height: 720 },
+  deviceScaleFactor: 1.5,
   recordVideo: { dir: outDir, size: { width: 1920, height: 1080 } },
   reducedMotion: "reduce",
 });
@@ -38,88 +40,138 @@ function card(title, body) {
 
 const hold = (ms) => page.waitForTimeout(ms);
 
-await beat("Ukraine, winter 2026:\nscheduled blackouts, every day.", async () => {
-  await page.setContent(card("Charge Ahead", "What will go dead, and what to charge by when."));
+const APP = "http://127.0.0.1:4173/?now=12:00";
+const docUrl = (name) => "file://" + path.resolve("devpost", name);
+
+// Part 1: the app, from the first second.
+await page.goto(APP, { waitUntil: "networkidle" });
+await page.evaluate(() => localStorage.clear());
+await page.goto(APP, { waitUntil: "networkidle" });
+
+await beat("Charge Ahead: which devices will die in a blackout,\nand what to charge first.", async () => {
   await hold(7000);
 });
 
-await beat("Outage apps show when the power goes off.\nNot whether your batteries will last.", async () => {
-  await page.setContent(
-    card("When, not whether.", "A schedule says the power goes off.<br>It does not say what still has charge."),
-  );
-  await hold(8000);
+await beat("For people living with scheduled power cuts.\nNo account. One tap loads a demo day.", async () => {
+  await hold(5500);
+  await page.getByRole("button", { name: "Try a demo day" }).click();
+  await hold(4500);
 });
 
-await beat("Paste your outage schedule.\nAny common format.", async () => {
-  await page.goto("http://127.0.0.1:4173/?now=12:00", { waitUntil: "networkidle" });
-  await page.evaluate(() => localStorage.clear());
-  await page.goto("http://127.0.0.1:4173/?now=12:00", { waitUntil: "networkidle" });
-  await hold(1500);
-  await page.locator("#schedule-text").fill("SAMPLE\n08:00–12:00\nfrom 16:00 to 20:00\n");
-  await hold(5000);
-});
-
-await beat("Or tap the hours the power is off.", async () => {
+await beat("Outages 08:00–12:00 and 16:00–20:00.\nPaste a schedule, or tap the hours.", async () => {
   const hour = page.getByRole("button", { name: "22:00 to 23:00, power on" });
   await hour.scrollIntoViewIfNeeded();
+  await hold(3000);
   await hour.click();
-  await hold(1500);
-  await page.getByRole("button", { name: "22:00 to 23:00, outage" }).click();
   await hold(2500);
+  await page.getByRole("button", { name: "22:00 to 23:00, outage" }).click();
+  await hold(3500);
 });
 
-await beat("Add what you own.\nPhone, power bank, laptop, router, flashlight.", async () => {
-  await page.getByRole("button", { name: "Add typical kit (estimates)" }).click();
-  await hold(6000);
-});
-
-await beat("Ye Zaryad says what dies, and when.\nThe router runs out at 18:15.", async () => {
-  await page.getByRole("alert").scrollIntoViewIfNeeded();
-  await page.screenshot({ path: path.join(outDir, "warning.png") });
+await beat("A typical home kit. Every number is an estimate you can change.", async () => {
+  await page.getByRole("heading", { name: "Your kit" }).scrollIntoViewIfNeeded();
   await hold(9000);
 });
 
-await beat("The next 24 hours,\nand how the batteries fall.", async () => {
-  await page.getByRole("heading", { name: "The next 24 hours" }).scrollIntoViewIfNeeded();
-  await hold(4000);
-  await page.getByTestId("daybar").locator("[data-outage-segment='true']").first().click();
-  await hold(4000);
-  await page.getByRole("heading", { name: "Battery level" }).scrollIntoViewIfNeeded();
-  await hold(4000);
-});
-
-await beat("Add a charging station.\nThe plan updates.", async () => {
-  await page.getByRole("button", { name: "Add charging station (estimate)" }).click();
-  await page.locator(".alert").scrollIntoViewIfNeeded();
+await beat("Router runs out at 18:15.\nCharge this first: Power bank.", async () => {
+  await page.evaluate(() => window.scrollTo({ top: 0 }));
+  await page.getByRole("alert").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(outDir, "warning.png") });
   await hold(8000);
 });
 
-await beat("A list: what to charge, and by when.\nCharge the power bank by 15:15.", async () => {
-  await page.getByRole("heading", { name: "What to charge" }).scrollIntoViewIfNeeded();
-  await hold(7000);
+await beat("The next 24 hours, and how each battery drains.", async () => {
+  await page.getByRole("heading", { name: "The next 24 hours" }).scrollIntoViewIfNeeded();
+  await hold(4000);
+  await page.getByTestId("daybar").locator("[data-outage-segment='true']").first().click();
+  await hold(3000);
+  await page.getByRole("heading", { name: "Battery level" }).scrollIntoViewIfNeeded();
+  await hold(3500);
 });
 
-await beat("One tap downloads calendar reminders.", async () => {
+await beat("Add a charging station. The plan updates.", async () => {
+  await page.getByRole("button", { name: "Add charging station (estimate)" }).scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Add charging station (estimate)" }).click();
+  await page.locator(".alert").scrollIntoViewIfNeeded();
+  await hold(6000);
+});
+
+await beat("What to charge, and by when: Power bank by 15:15.\nOne tap adds calendar reminders.", async () => {
+  await page.getByRole("heading", { name: "What to charge" }).scrollIntoViewIfNeeded();
+  await hold(6000);
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Add reminders to calendar" }).click();
   await download;
-  await hold(5000);
+  await hold(4000);
 });
 
-await beat("Works offline.\nDuring a blackout, the internet goes too.", async () => {
+await beat("Works offline. In a blackout, the internet often goes too.", async () => {
   await page.waitForFunction(() => navigator.serviceWorker.ready);
   await context.setOffline(true);
   await page.reload({ waitUntil: "domcontentloaded" });
   await page.getByRole("heading", { name: "Charge Ahead" }).waitFor();
-  await hold(7000);
+  await hold(6000);
   await context.setOffline(false);
 });
 
-await beat("Planned with the Devpost Learn Skill Pack.\nOpen source, MIT.", async () => {
+await beat("Wrong input gets a plain message.\nThe plan keeps the last good value.", async () => {
+  const holds = page.getByLabel("Holds, Wh").nth(1);
+  await holds.scrollIntoViewIfNeeded();
+  await hold(1000);
+  await holds.fill("-5");
+  await hold(5000);
+  await holds.fill("60");
+  await hold(1500);
+});
+
+// Part 2: how Vadym built it with the Devpost Learn Skill Pack.
+await beat("Built with the Devpost Learn Skill Pack:\nsix skills, in order.", async () => {
   await page.setContent(
-    card("Open source.", "Planned with the Devpost Learn Skill Pack.<br>MIT license. No account. No server."),
+    card(
+      "How Vadym built it",
+      "Devpost Learn Skill Pack + an AI coding agent<br><br>1-start → 2-scope → 3-prd → 4-spec → 5-build → 6-ship",
+    ),
   );
-  await hold(7000);
+  await hold(8500);
+});
+
+await beat("The skills asked him interview questions.\nHis answers decided the users, the feature and the look.", async () => {
+  await page.goto(docUrl("scope.html"), { waitUntil: "load" });
+  await hold(8000);
+});
+
+await beat("scope.md: other apps show when the power goes off.\nThis one says what will die, and when.", async () => {
+  await page.locator("svg").first().scrollIntoViewIfNeeded();
+  await hold(10000);
+});
+
+await beat("prd.md: the screens, the states,\nand what counts as working.", async () => {
+  await page.goto(docUrl("prd.html"), { waitUntil: "load" });
+  await hold(3500);
+  await page.mouse.wheel(0, 600);
+  await hold(3500);
+});
+
+await beat("spec.md: React, TypeScript and Vite.\nNo server, so it still works in a blackout.", async () => {
+  await page.goto(docUrl("spec.html"), { waitUntil: "load" });
+  await hold(4000);
+  await page.mouse.wheel(0, 600);
+  await hold(4000);
+});
+
+await beat("Built slice by slice, with a checklist and tests.\n39 unit tests, 6 browser tests.", async () => {
+  await page.goto(docUrl("app-map.html"), { waitUntil: "load" });
+  await hold(9000);
+});
+
+await beat("Live on GitHub Pages. Open source, MIT license.", async () => {
+  await page.setContent(
+    card(
+      "Charge Ahead",
+      "solar-depin-hub.github.io/ye-zaryad<br>github.com/Solar-DePIN-Hub/ye-zaryad<br><br>Know what will die before the lights go out.",
+    ),
+  );
+  await hold(10000);
 });
 
 function stamp(ms) {
