@@ -3,7 +3,7 @@ doc: spec
 status: approved
 ---
 
-# Є заряд — Technical Spec
+# Charge Ahead — Technical Spec
 
 Source: `prd.md` headings below, and `scope.md > The Unique Kernel`. Interview answers were relayed from Vadym Bilobrovets. He did not choose a stack. The build brief that accompanied his answers fixed a browser app with no server and no API keys. That constraint is recorded here as a session decision, not as his words. See **Assumptions (to confirm with Vadym)** and **Decisions and Open Issues**.
 
@@ -28,7 +28,7 @@ This shape is a single page of JavaScript, not a server plus an app, because the
 
 PRD ref: `prd.md > The Core Journey`.
 
-1. They open the page. The shell reads `localStorage` key `ye-zaryad:v1`. First visit: empty schedule, empty kit.
+1. They open the page. The shell reads `localStorage` key `ye-zaryad:v1`. First visit: empty schedule, empty kit, and a **Try a demo day** button that fills `SAMPLE_SCHEDULE` and the typical kit (`typicalKit()` in `src/domain/presets.ts`).
 2. They paste text or tap an hour. The schedule reader updates the outage ranges. Taps rewrite the text so both stay in agreement. Chips render from those ranges.
 3. They add a preset. The kit list in memory grows. Edits and reordering change that list only.
 4. The simulation runs on the ranges, the kit, and the current local time. It returns deaths, per-outage breakdowns, battery levels every 15 minutes, and charge lines.
@@ -81,7 +81,7 @@ npm run preview
 
 Submission needs a short demo video and a public GitHub repository. A live URL does not replace either.
 
-Optional deploy: GitHub Pages from `.github/workflows/deploy.yml`, Vite `base` `/ye-zaryad/`, site path `https://solar-depin-hub.github.io/ye-zaryad/` once Pages is enabled for the repository. The workflow builds with `VITE_BASE=/ye-zaryad/`. Local dev and tests use base `/`. Pages for an organization repository can require an owner to allow GitHub Actions as the Pages source. Until that is on, the workflow's deploy job cannot succeed; the video and the repo still show the proof.
+Optional deploy: GitHub Pages from `.github/workflows/deploy.yml`, Vite `base` `/ye-zaryad/`, site path `https://solar-depin-hub.github.io/ye-zaryad/` (live). The workflow builds with `VITE_BASE=/ye-zaryad/`. Local dev and tests use base `/`. Pages is enabled; every push to `main` that passes the checks redeploys the site.
 
 Demo recording: run the app, record a 1920×1080 frame with the 390×844 column centered, no voice and no music. Captions are a separate draft file for Vadym to edit.
 
@@ -169,7 +169,7 @@ Implements `prd.md > States and Boundaries` (Saved).
 
 ### Offline shell
 
-`vite-plugin-pwa` precaches the built assets. The manifest name is «Є заряд», theme colour `#0E1726`, display `standalone`. Icons are original geometric marks (no logos). `start_url` and scope follow Vite's `base`.
+`vite-plugin-pwa` precaches the built assets. The manifest name is "Charge Ahead: blackout charging planner" (short name "Charge Ahead"), theme colour `#0E1726`, display `standalone`. Icons are original geometric marks (no logos). `start_url` and scope follow Vite's `base`.
 
 Implements `prd.md > Offline and reminders`.
 
@@ -300,7 +300,7 @@ The simulation itself is not faked. Sample schedules are labelled SAMPLE. Preset
 ## Decisions and Open Issues
 
 - **Product decisions** are his and are listed in `prd.md > Product Decisions`.
-- **Stack** was not his. The build brief required Vite, React, TypeScript, an offline page, unit tests, one Playwright test, and GitHub Pages at `/ye-zaryad/`. Accepted tradeoff: he does not yet have a live URL until an organization owner enables Pages. The local app and the video do not depend on that.
+- **Stack** was not his. The build brief required Vite, React, TypeScript, an offline page, unit tests, one Playwright test, and GitHub Pages at `/ye-zaryad/`. Pages is now enabled, so the live URL works.
 - **No learner uncertainty was stated.** He did not name a technical part he was unsure about. Plan-first experience is not established (`learner-profile.md`). This blueprint does not invent a doubt or add a tool for practice.
 - **Check during the build:** the simulation tests are the evidence for "what dies and when." If a boundary case (exactly enough energy, priority order, charging between two outages, a clear day) disagrees with this spec, fix the code or record the revision. Do not soften the kernel.
 - **Open questions carried from the PRD:** none that block implementation. Assumptions stay labelled.
@@ -312,3 +312,12 @@ The simulation itself is not faked. Sample schedules are labelled SAMPLE. Preset
 - Storage key `ye-zaryad:v1`.
 - GitHub Pages base path `/ye-zaryad/`.
 - Build mode for the implementation session: fast, with mechanical checks (tests and a scripted browser pass) standing in for a live hands-on review. He did not choose learn or fast mode. He still needs to try the page himself before he submits.
+
+## Revisions after approval (Oct 23, 2026)
+
+- **English only, renamed Charge Ahead.** `src/strings.ts` holds one English set. The parser no longer reads the Ukrainian "from…to" wording; it reads the English `from … to …`. A unit test and an end-to-end test fail if any Cyrillic text reaches the page.
+- **Power already off.** When the simulation starts inside an outage, the warning says when the power is due back and what to charge first once it is (`Warnings.tsx`).
+- **First screen.** `App.tsx` renders a "who it is for" paragraph (`strings.heroWho`), three numbered steps, and a **Try a demo day** button. The button sets `SAMPLE_SCHEDULE`, the typical kit, clears ticks, and scrolls to the result. When a plan exists, the button becomes **Start over**.
+- **Validation.** `src/domain/validate.ts` defines limits (capacity 0–5000 Wh, charge and draw 0–3000 W, charge level 0–100 %, name 1–40 characters, schedule text up to 1000 characters, up to 12 devices). `src/components/Fields.tsx` keeps the typed text, sets `aria-invalid`, shows a plain message, and passes only valid values to the plan. On blur, an invalid field returns to the last valid value. `loadPlan` runs `sanitizeItem` on saved items.
+- **Layout.** At 900 px and wider, `.layout` is a two-column grid; the result column is sticky.
+- **Tests.** Vitest: 39 tests in 7 files (adds `strings` and `validate`). Playwright: 6 tests (adds the demo-day first screen and the form checks).

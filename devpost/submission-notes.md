@@ -4,9 +4,9 @@ Facts only. This is not the Devpost description, not the "how I used the Skill P
 
 ## What was built
 
-- Name on screen: Є заряд. Repository and Pages path: `ye-zaryad`.
+- Name on screen: Charge Ahead (renamed from Ye Zaryad on Oct 23, 2026). Repository and Pages path: `ye-zaryad`.
 - One English page. No language switch. All sentences are in `src/strings.ts`.
-- Outage hours: paste text (including `08:00–12:00`, `8-12`, `з 16:00 до 20:00`) or tap hours.
+- Outage hours: paste text (including `08:00–12:00`, `8-12`, `from 16:00 to 20:00`) or tap hours.
 - Kit presets, each marked "Typical estimate": phone, power bank, laptop, router, flashlight, and a separate charging station. No brand names on screen.
 - 15-minute simulation of the next 24 hours. Red warning with what runs out and what to charge first. At `?now=12:00` with the sample day and the typical kit, the warning includes "Router runs out at 18:15. Charge this first: Power bank." Adding the charging station clears that warning.
 - Charge list in the form "Charge Power bank by 15:15", ticks, and a downloaded `ye-zaryad.ics` (CRLF, UTC, one reminder per event).
@@ -29,8 +29,8 @@ Your interview answers were relayed. They were not re-asked. The English plannin
 
 ## Tests
 
-- Vitest: 32 tests, 5 files (`parseSchedule`, `units`, `simulate`, `ics`, `plan`). Parser cases include the separators, `з…до`, `24:00`, overnight, overlaps, a bad line, and empty input.
-- Playwright: 2 tests. One walks sample schedule → typical kit → "runs out" → `.ics` download → reload. One reloads offline after the first load.
+- Vitest (Oct 23): 39 tests, 7 files (`parseSchedule`, `units`, `simulate`, `ics`, `plan`, `strings`, `validate`). Parser cases include the separators, `from…to`, `24:00`, overnight, overlaps, a bad line, and empty input.
+- Playwright (Oct 23): 6 tests. Sample schedule → typical kit → "runs out" → `.ics` download → reload; offline reload; "power is off now"; English only; the first screen and Try a demo day; form validation.
 - `npm run lint` is `tsc --noEmit`.
 - These passed locally before the pull request. GitHub Actions runs the same steps. The Pages deploy job runs only on a push to `main`.
 
@@ -41,7 +41,7 @@ Your interview answers were relayed. They were not re-asked. The English plannin
 - Edit the caption draft if you want, then upload a public video under 3 minutes. No music, no utility logos.
 - Write the Devpost text, the Skill Pack answer, and the exit survey yourself.
 - Confirm you are the age of majority on the form. That checkbox is yours.
-- Turn on GitHub Pages for this repository if you want the live URL. See the README. An organization owner may have to allow Pages from Actions.
+- GitHub Pages is on: https://solar-depin-hub.github.io/ye-zaryad/
 
 ## Assumptions to confirm
 

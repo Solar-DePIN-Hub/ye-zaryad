@@ -401,3 +401,78 @@ textarea { min-height: 96px; resize: vertical; }
 }
 
 
+
+/* Hero: who it is for, how it works, one tap to a demo day. */
+.hero-who {
+  margin: 14px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 60ch;
+}
+
+.hero-steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.hero-steps li { display: flex; align-items: center; gap: 6px; }
+
+.hero-steps span {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.hero-actions { margin-top: 16px; }
+.hero-actions .help { margin: 8px 0 0; font-size: 13px; }
+
+.btn.big {
+  min-height: 52px;
+  padding: 12px 22px;
+  font-size: 17px;
+  box-shadow: 0 0 0 6px rgba(255, 181, 71, 0.12), 0 10px 30px rgba(232, 135, 42, 0.25);
+}
+
+.hero-facts {
+  margin: 12px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--faint);
+}
+
+/* Inline form errors */
+label.invalid input, textarea[aria-invalid="true"] { border-color: var(--danger); }
+.field-error { color: #ffb3b3; font-size: 12px; line-height: 1.35; }
+
+/* Wide screens: inputs on the left, the answer stays in view on the right. */
+@media (min-width: 900px) {
+  .shell { width: min(1080px, 100%); padding: 44px 32px 72px; }
+  .header { max-width: 720px; }
+  h1 { font-size: 56px; }
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .col-result {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}

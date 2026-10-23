@@ -5,7 +5,8 @@ import { KitEditor } from "./components/KitEditor";
 import { PlanTimeline } from "./components/PlanTimeline";
 import { ScheduleInput } from "./components/ScheduleInput";
 import { Warnings } from "./components/Warnings";
-import { parseSchedule } from "./domain/parseSchedule";
+import { parseSchedule, SAMPLE_SCHEDULE } from "./domain/parseSchedule";
+import { typicalKit } from "./domain/presets";
 import { simulate } from "./domain/simulate";
 import type { KitItem } from "./domain/types";
 import { floorToStep, minutesOfDay } from "./domain/time";
@@ -44,6 +45,23 @@ export function App() {
   );
   const ready = parsed.blocks.length > 0 && items.length > 0;
 
+  const empty = scheduleText.trim() === "" && items.length === 0;
+
+  function loadDemo() {
+    setScheduleText(SAMPLE_SCHEDULE);
+    setItems(typicalKit(() => crypto.randomUUID()));
+    setChecked([]);
+    window.requestAnimationFrame(() =>
+      document.getElementById("result")?.scrollIntoView({ behavior: "smooth", block: "start" }),
+    );
+  }
+
+  function startOver() {
+    setScheduleText("");
+    setItems([]);
+    setChecked([]);
+  }
+
   function toggleChecked(id: string) {
     setChecked((current) =>
       current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
@@ -59,29 +77,62 @@ export function App() {
         </div>
         <h1>{strings.appName}</h1>
         <p className="tagline">{strings.tagline}</p>
+        <p className="hero-who">{strings.heroWho}</p>
+        <ol className="hero-steps" aria-label={strings.heroStepsLabel}>
+          {strings.heroSteps.map((step, index) => (
+            <li key={step}>
+              <span aria-hidden="true">{index + 1}</span>
+              {step}
+            </li>
+          ))}
+        </ol>
+        <div className="hero-actions">
+          {empty ? (
+            <>
+              <button type="button" className="btn primary big" onClick={loadDemo}>
+                {strings.tryDemo}
+              </button>
+              <p className="help">{strings.tryDemoHelp}</p>
+            </>
+          ) : (
+            <>
+              <button type="button" className="btn" onClick={startOver}>
+                {strings.startOver}
+              </button>
+              <p className="help">{strings.startOverHelp}</p>
+            </>
+          )}
+        </div>
+        <p className="hero-facts">{strings.heroFacts}</p>
       </header>
-      <ScheduleInput
-        text={scheduleText}
-        onText={setScheduleText}
-        blocks={parsed.blocks}
-        errors={parsed.errors}
-        nowMin={nowMin}
-      />
-      <KitEditor items={items} onChange={setItems} />
-      <Warnings hasSchedule={parsed.blocks.length > 0} hasKit={items.length > 0} result={ready ? result : null} />
-      {parsed.blocks.length > 0 && <PlanTimeline result={result} items={items} />}
-      {items.some((item) => item.capacityWh > 0) && parsed.blocks.length > 0 && (
-        <BatteryChart result={result} items={items} />
-      )}
-      <ActionList
-        actions={ready ? result.actions : []}
-        checked={checked}
-        onToggle={toggleChecked}
-        today={today}
-        hasOutage={parsed.blocks.length > 0}
-      />
-      <p className="footer">{strings.footer}</p>
-      <p className="footer">{strings.offlineReady}</p>
+      <div className="layout">
+        <div className="col-input">
+          <ScheduleInput
+            text={scheduleText}
+            onText={setScheduleText}
+            blocks={parsed.blocks}
+            errors={parsed.errors}
+            nowMin={nowMin}
+          />
+          <KitEditor items={items} onChange={setItems} />
+        </div>
+        <div className="col-result" id="result">
+          <Warnings hasSchedule={parsed.blocks.length > 0} hasKit={items.length > 0} result={ready ? result : null} />
+          {parsed.blocks.length > 0 && <PlanTimeline result={result} items={items} />}
+          {items.some((item) => item.capacityWh > 0) && parsed.blocks.length > 0 && (
+            <BatteryChart result={result} items={items} />
+          )}
+          <ActionList
+            actions={ready ? result.actions : []}
+            checked={checked}
+            onToggle={toggleChecked}
+            today={today}
+            hasOutage={parsed.blocks.length > 0}
+          />
+          <p className="footer">{strings.footer}</p>
+          <p className="footer">{strings.offlineReady}</p>
+        </div>
+      </div>
     </main>
   );
 }

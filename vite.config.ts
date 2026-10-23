@@ -14,7 +14,7 @@ export default defineConfig({
       includeAssets: ["favicon.svg", "icons/*.png"],
       manifest: {
         name: "Charge Ahead: blackout charging planner",
-        short_name: "Charge Ahead: blackout charging planner",
+        short_name: "Charge Ahead",
         description: "See what will run out of charge, and what to charge by when.",
         theme_color: "#0E1726",
         background_color: "#0E1726",

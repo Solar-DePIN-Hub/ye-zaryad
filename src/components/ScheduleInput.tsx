@@ -8,6 +8,7 @@ import {
   type ParseError,
 } from "../domain/parseSchedule";
 import { formatClock } from "../domain/time";
+import { SCHEDULE_MAX } from "../domain/validate";
 import { strings } from "../strings";
 
 interface Props {
@@ -31,9 +32,12 @@ export function ScheduleInput({ text, onText, blocks, errors, nowMin }: Props) {
         id="schedule-text"
         value={text}
         placeholder={strings.schedulePlaceholder}
-        onChange={(event) => onText(event.target.value)}
+        onChange={(event) => onText(event.target.value.slice(0, SCHEDULE_MAX))}
+        maxLength={SCHEDULE_MAX}
+        aria-invalid={errors.length > 0 ? true : undefined}
         spellCheck={false}
       />
+      {text.length >= SCHEDULE_MAX && <p className="parse-error">{strings.scheduleTooLong(SCHEDULE_MAX)}</p>}
       <div className="actions-row">
         <button type="button" className="btn" onClick={() => onText(SAMPLE_SCHEDULE)}>
           {strings.useSample}

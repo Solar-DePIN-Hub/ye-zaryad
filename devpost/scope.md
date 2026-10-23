@@ -3,7 +3,7 @@ doc: scope
 status: approved
 ---
 
-# Є заряд
+# Charge Ahead
 
 A calm planner that tells you what will go dead in a blackout, and what to charge by when.
 
@@ -26,17 +26,17 @@ What they have today is a schedule of hours. The schedule does not tell them whe
 
 ## The Core Loop
 
-They open Є заряд. They put in today's outage hours, either by pasting the text or by tapping hours on a bar. They add what they own. They read what will die and when, and a list of what to charge by when. They can drop that list into the phone calendar. They come back on the next outage day and do it again, including when the internet is already gone.
+They open Charge Ahead. They put in today's outage hours, either by pasting the text or by tapping hours on a bar. They add what they own. They read what will die and when, and a list of what to charge by when. They can drop that list into the phone calendar. They come back on the next outage day and do it again, including when the internet is already gone.
 
 ## Inspiration & Identity
 
-The name is «Є заряд» (Latin slug: Ye Zaryad). The feeling he asked for: dark, calm, yellow-orange accents, like a light in the dark.
+The name was first Ye Zaryad (Ukrainian for "there is charge"). It is now **Charge Ahead** (see Revisions below). The feeling he asked for: dark, calm, yellow-orange accents, like a light in the dark.
 
 He did not name a reference app, a font, or a website to copy.
 
 ## Why This Matters to the Learner
 
-He wants to be ready for the cuts. In his words, he had sat with the phone off and the appliances off, and it felt bad. ("сьогодні я сидів з відключеним телефоном і всіма електро приладами) і було сумно")
+He wants to be ready for the cuts. In his words, he had sat with the phone off and the appliances off, and it felt bad. (Translated from his message: "today I sat with my phone and all my appliances switched off, and it was sad.")
 
 ## What "Working" Looks Like
 
@@ -69,7 +69,17 @@ In this proof of concept:
 ## Assumptions (to confirm with Vadym)
 
 - Review format is an HTML companion plus this Markdown file. He did not pick a format.
-- The Latin slug `ye-zaryad` is for the repository and the site path. He named the app «Є заряд» and did not discuss the URL.
+- The Latin slug `ye-zaryad` is for the repository and the site path. He first named the app Ye Zaryad and did not discuss the URL.
 - Wattages, battery sizes, and charge speeds are typical estimates he can edit. He named the devices and did not give numbers.
 - "By 14:00" is treated as the latest time to plug something in so it can be full before the next outage. The list still reads "Charge power bank by 14:00".
 - One scrolling page, not several screens. He described what he sees and does, not a sitemap.
+
+## Revisions after approval (Oct 23, 2026)
+
+These changes were made after the build, at Vadym's request or to match the judges' checklist. The kernel did not change.
+
+- **Name.** Renamed from Ye Zaryad (Ukrainian for "there is charge") to **Charge Ahead**, and the whole page is English only, as Vadym asked. The repository and site path stay `ye-zaryad`.
+- **Schedule text.** The parser reads English and numeric forms: `08:00–12:00`, `8-12`, `from 16:00 to 20:00`. The Ukrainian "from…to" wording was removed with the Ukrainian copy.
+- **First screen.** Under the name, one paragraph says who the page is for and what it does, three numbered steps show the flow, and a **Try a demo day** button fills the sample day and the typical kit in one tap. **Start over** clears it. No account exists, so judges and visitors need no login.
+- **Form checks.** Kit numbers must be inside fixed ranges (0–5000 Wh, 0–3000 W, 0–100 %). An empty name or an out-of-range number shows a plain message under the field and the plan keeps the last valid value. Saved data is repaired on load.
+- **Wide screens.** From 900 px wide, the inputs sit on the left and the answer stays in view on the right. Phones keep one column.

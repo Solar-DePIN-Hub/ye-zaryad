@@ -96,3 +96,11 @@ export const typicalKitIds = ["router", "laptop", "phone", "flashlight", "power-
 export function presetById(id: string): Preset | undefined {
   return presets.find((preset) => preset.id === id);
 }
+
+/** The typical home kit as fresh items, in list order. */
+export function typicalKit(newId: () => string): KitItem[] {
+  return typicalKitIds
+    .map((id) => presetById(id))
+    .filter((preset): preset is Preset => Boolean(preset))
+    .map((preset) => ({ ...preset.item, id: newId(), presetId: preset.id }));
+}

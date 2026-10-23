@@ -1,6 +1,8 @@
 import { presetById, presets, typicalKitIds } from "../domain/presets";
 import type { KitItem } from "../domain/types";
+import { LIMITS } from "../domain/validate";
 import { strings } from "../strings";
+import { NameField, NumberField } from "./Fields";
 
 interface Props {
   items: KitItem[];
@@ -75,65 +77,47 @@ export function KitEditor({ items, onChange }: Props) {
           {items.map((item, index) => (
             <li className="kit-row" key={item.id}>
               <div className="kit-top">
-                <label className="field">
-                  {strings.name}
-                  <input
-                    type="text"
-                    value={item.name}
-                    onChange={(event) => update(item.id, { name: event.target.value })}
-                  />
-                </label>
+                <NameField value={item.name} onValid={(name) => update(item.id, { name })} />
               </div>
               {item.presetId && <span className="estimate">{strings.estimate}</span>}
               {item.capacityNote && <p className="note">{item.capacityNote}</p>}
               <div className="grid-2">
-                <label>
-                  {strings.holds}
-                  <input
-                    type="number"
-                    min={0}
-                    step={0.1}
-                    value={item.capacityWh}
-                    onChange={(event) =>
-                      update(item.id, { capacityWh: numberOrZero(event.target.value) })
-                    }
-                  />
-                </label>
-                <label>
-                  {strings.chargesAt}
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={item.chargeW}
-                    onChange={(event) =>
-                      update(item.id, { chargeW: numberOrZero(event.target.value) })
-                    }
-                  />
-                </label>
-                <label>
-                  {strings.uses}
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={item.drawW}
-                    onChange={(event) => update(item.id, { drawW: numberOrZero(event.target.value) })}
-                  />
-                </label>
-                <label>
-                  {strings.full}
-                  <input
-                    type="number"
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={Math.round(item.soc * 100)}
-                    onChange={(event) =>
-                      update(item.id, { soc: clampPercent(numberOrZero(event.target.value)) })
-                    }
-                  />
-                </label>
+                <NumberField
+                  label={strings.holds}
+                  value={item.capacityWh}
+                  min={LIMITS.capacityWh.min}
+                  max={LIMITS.capacityWh.max}
+                  step={0.1}
+                  unit="Wh"
+                  onValid={(capacityWh) => update(item.id, { capacityWh })}
+                />
+                <NumberField
+                  label={strings.chargesAt}
+                  value={item.chargeW}
+                  min={LIMITS.chargeW.min}
+                  max={LIMITS.chargeW.max}
+                  step={1}
+                  unit="W"
+                  onValid={(chargeW) => update(item.id, { chargeW })}
+                />
+                <NumberField
+                  label={strings.uses}
+                  value={item.drawW}
+                  min={LIMITS.drawW.min}
+                  max={LIMITS.drawW.max}
+                  step={1}
+                  unit="W"
+                  onValid={(drawW) => update(item.id, { drawW })}
+                />
+                <NumberField
+                  label={strings.full}
+                  value={Math.round(item.soc * 100)}
+                  min={LIMITS.percent.min}
+                  max={LIMITS.percent.max}
+                  step={1}
+                  unit="%"
+                  onValid={(percent) => update(item.id, { soc: percent / 100 })}
+                />
               </div>
               <label className="check">
                 <input
@@ -171,13 +155,4 @@ export function KitEditor({ items, onChange }: Props) {
       )}
     </section>
   );
-}
-
-function numberOrZero(value: string): number {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function clampPercent(value: number): number {
-  return Math.min(100, Math.max(0, value)) / 100;
 }

@@ -3,16 +3,16 @@ doc: prd
 status: approved
 ---
 
-# Є заряд — Product Requirements
+# Charge Ahead — Product Requirements
 
-A calm one-page planner for a person who needs to know what will go dead in the next outage, and what to charge by when. The name on screen is «Є заряд».
+A calm one-page planner for a person who needs to know what will go dead in the next outage, and what to charge by when. The name on screen is **Charge Ahead**.
 
 Source: `scope.md > The Unique Kernel`, `scope.md > Who It's For`, `scope.md > What "Working" Looks Like`. Interview answers were relayed from Vadym Bilobrovets. He has not separately reviewed this English page. `status: approved` means the build follows those relayed decisions. See **Assumptions (to confirm with Vadym)**.
 
 ## The Core Journey
 
-1. They open Є заряд on their phone. The page is dark and quiet. The name and one line of purpose are at the top. Nothing is calculated yet.
-2. They put in today's outage hours. They can paste a message (the way those messages are written, including forms such as `08:00–12:00`, `8-12`, and `з 16:00 до 20:00`) or tap hours on a 24-hour bar. Hours that parsed show up as chips. A line that cannot be read is marked, and the lines that could be read still count.
+1. They open Charge Ahead on their phone. The page is dark and quiet. The name, one line of purpose, and a short paragraph saying who it is for are at the top, with a **Try a demo day** button. Nothing is calculated yet.
+2. They put in today's outage hours. They can paste a message (the way those messages are written, including forms such as `08:00–12:00`, `8-12`, and `from 16:00 to 20:00`) or tap hours on a 24-hour bar. Hours that parsed show up as chips. A line that cannot be read is marked, and the lines that could be read still count.
 3. They add what they own from the set he named: phone, power bank, laptop, router, charging station, flashlight. Each preset is labelled as a typical estimate and can be changed. They can put the important things higher in the list.
 4. The page says what will die and at what time. If something will not last, that line is red and it names what to charge first.
 5. Under that, a 24-hour bar shows power-on time, outage time, and when to charge. A simple line shows battery level across the day. Tapping an outage shows that outage's breakdown.
@@ -25,7 +25,7 @@ Success is step 6: a charge-by list and a reminder, plus a red warning when the 
 
 One page, read from top to bottom, comfortable at a phone width and still a single calm column on a larger screen.
 
-1. **Name.** «Є заряд», with a short English line under it.
+1. **Name.** Charge Ahead, with a short line under it, a "who it is for" paragraph, three numbered steps, and the demo / start-over button.
 2. **Outage hours.** A text box, a button to fill a labelled sample, chips for the hours that were understood, a note for lines that were not, and a 24-hour tap bar.
 3. **Your kit.** Buttons for each device he named, then a short editable list. Higher means "keep this alive first."
 4. **What dies.** Red when something runs out, with what to charge first. Quiet when nothing runs out.
@@ -48,7 +48,7 @@ Large time numerals. Plenty of space. Short sentences. Motion, if any, is small:
 
 Develops `scope.md > The Core Loop` and `scope.md > The POC Boundary`.
 
-The text box accepts several hours on several lines, and more than one range on a line. Separators include a hyphen, an en dash, an em dash, and the words `до` / `to`. A bare `8-12` means 08:00–12:00. `24:00` is allowed as an end. A range that crosses midnight is split into the piece before midnight and the piece after. Overlapping ranges become one block. `22:00–00:00` means "until midnight."
+The text box accepts several hours on several lines, and more than one range on a line. Separators include a hyphen, an en dash, an em dash, and the words `from` / `to`. A bare `8-12` means 08:00–12:00. `24:00` is allowed as an end. A range that crosses midnight is split into the piece before midnight and the piece after. Overlapping ranges become one block. `22:00–00:00` means "until midnight."
 
 Understood ranges appear as chips. A chip can be removed. A line with no time in it and no digits (a heading, or the word SAMPLE) is ignored. A line that looks like it was trying to be a time and failed is highlighted, with a hint to try `08:00–12:00` or `8-12`. The rest of the text still works.
 
@@ -57,7 +57,7 @@ The tap bar has one control per hour, 00 through 23. Tapping an hour that is not
 A button fills a sample schedule. The sample is visibly marked SAMPLE. It is not a real utility's text and shows no company name.
 
 - As the person charging in a rush, I want to paste the message I already have so that I do not retype every hour.
-  - [ ] Pasting `08:00–12:00` and `з 16:00 до 20:00` shows two chips.
+  - [ ] Pasting `08:00–12:00` and `from 16:00 to 20:00` shows two chips.
   - [ ] A broken line is marked and a good line on another row still becomes a chip.
 - As either person, I want to tap hours when I do not have a message so that the same plan still runs.
   - [ ] Tapping 14 and 15 shows an outage chip covering those hours.
@@ -126,14 +126,15 @@ Develops `scope.md > The POC Boundary`.
 
 The first visit needs a network so the page can load. After that, the page opens with the connection off, including the last hours and kit. Nothing is sent to a server. There is no account.
 
-The interface is English. There is no language toggle. All user-facing sentences live in one module so a Ukrainian set can be added later without hunting through components.
+The interface is English. There is no language toggle. All user-facing sentences live in one module so another language could be added later without hunting through components.
 
 - [ ] After one online load, reloading while offline still shows the app name and the saved schedule.
 - [ ] The screen has no language switch.
 
 ## States and Boundaries
 
-- **First visit** — empty text box, no chips, no kit, no red warning. Short instructions say to paste or tap hours, then add what they own.
+- **First visit** — empty text box, no chips, no kit, no red warning. Short instructions say to paste or tap hours, then add what they own. One tap on **Try a demo day** fills the sample day and typical kit.
+- **Invalid input** — an empty device name or a number outside its range shows a plain message under that field. The plan keeps the last valid value.
 - **Schedule only** — chips and the tap bar are filled in. The plan asks for a kit before it talks about dying devices.
 - **Kit only** — devices are listed. Without outage hours, the page does not invent a blackout.
 - **Normal plan** — warning or all-clear, the day bar, the battery line, and the charge list.
@@ -152,11 +153,11 @@ The interface is English. There is no language toggle. All user-facing sentences
 - Schedule entry is both paste and tap, not one of them.
 - Look is dark, calm, yellow-orange. A shortfall is red and says what to charge first.
 - Offline use and a calendar file are in. A language toggle is out.
-- The name is «Є заряд».
+- The name is Charge Ahead (renamed from Ye Zaryad on Oct 23, 2026).
 
 ## Assumptions (to confirm with Vadym)
 
-- One scrolling page, phone-width, centered on a dark background on a large screen.
+- One scrolling page, phone-width on a phone. From 900 px wide, two columns: inputs left, answer right.
 - Concrete palette used because he did not give hex values: background `#0E1726`, yellow-orange `#FFB547`, a quieter green for "grid is on" `#3DDC97`, danger red `#FF6B6B`, warm off-white text. These match "dark, calm, yellow-orange" and "red warning" but the exact values are not his.
 - Typeface: Manrope, self-hosted, because he did not name a font. It is an open font (OFL).
 - Typical estimates, editable, not his measurements:
@@ -179,12 +180,12 @@ Paste and tap for outage hours, an editable kit of the six devices, a 15-minute 
 
 ## Deferred From the POC
 
-- Ukrainian copy. Out for now because he did not choose a language toggle. The module is the place it will go.
+- Other languages. Out: Vadym asked for English only.
 - Fetching a live schedule from a utility. Out because there is no official public API he asked to use, and terms are unclear. Paste and tap prove the kernel without it.
 
 ## Possible Later Enhancements
 
-- Ukrainian strings beside the English ones, and a switch only if he asks for it then.
+- More device presets.
 - A note of which outage group he usually follows, still typed or tapped by him.
 - Sharing a plan as a file he already understands (the calendar file is the version in this proof of concept).
 
@@ -198,3 +199,13 @@ Paste and tap for outage hours, an editable kit of the six devices, a 15-minute 
 ## Open Questions
 
 None that block the blueprint. The numbers and colours above are assumptions, not unanswered product choices. He can correct them without changing the kernel.
+
+## Revisions after approval (Oct 23, 2026)
+
+These changes were made after the build, at Vadym's request or to match the judges' checklist. The kernel did not change. Lines above that changed were edited in place so this page matches the live app.
+
+- **Name.** Renamed from Ye Zaryad (Ukrainian for "there is charge") to **Charge Ahead**, and the whole page is English only, as Vadym asked. The repository and site path stay `ye-zaryad`.
+- **Schedule text.** The parser reads English and numeric forms: `08:00–12:00`, `8-12`, `from 16:00 to 20:00`. The Ukrainian "from…to" wording was removed with the Ukrainian copy.
+- **First screen.** Under the name, one paragraph says who the page is for and what it does, three numbered steps show the flow, and a **Try a demo day** button fills the sample day and the typical kit in one tap. **Start over** clears it. No account exists, so judges and visitors need no login.
+- **Form checks.** Kit numbers must be inside fixed ranges (0–5000 Wh, 0–3000 W, 0–100 %). An empty name or an out-of-range number shows a plain message under the field and the plan keeps the last valid value. Saved data is repaired on load.
+- **Wide screens.** From 900 px wide, the inputs sit on the left and the answer stays in view on the right. Phones keep one column.

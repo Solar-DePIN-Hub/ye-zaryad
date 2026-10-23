@@ -2,7 +2,11 @@
 
 A browser page that reads outage hours, looks at the devices you own, and says what will run out of charge and what to charge by when.
 
-![Sample day at noon, with the red warning](docs/ye-zaryad.png)
+**For anyone living with scheduled power cuts**, like the daily outage hours many homes in Ukraine get.
+
+**Try it, no account needed:** open https://solar-depin-hub.github.io/ye-zaryad/ and tap **Try a demo day**. It fills a sample day (outages 08:00–12:00 and 16:00–20:00) and a typical home kit, then shows what runs out and what to charge first. **Start over** clears it.
+
+![Demo day at noon on a wide screen, with the red warning](docs/ye-zaryad.png)
 
 The interface is in English. There is no account and no server. After the first load the page opens offline. Preset wattages are typical estimates, not measurements of a real device. Schedules are typed or tapped. Nothing is fetched from a power company.
 
@@ -49,7 +53,11 @@ npm run test:e2e
 npm run build
 ```
 
-`npm test` is Vitest, 35 tests (parser, watt-hour conversion, simulation, calendar file, and the wording of the warnings). `npm run test:e2e` is four Playwright Chromium tests: sample schedule, typical kit, a "runs out" warning, an `.ics` download and reload; an offline reload; the "power is off now" case, where the page says nothing can charge until the power is back; and a check that the page is English only.
+`npm test` is Vitest, 39 tests (parser, watt-hour conversion, simulation, calendar file, the wording of the warnings, and form validation). `npm run test:e2e` is six Playwright Chromium tests: sample schedule, typical kit, a "runs out" warning, an `.ics` download and reload; an offline reload; the "power is off now" case, where the page says nothing can charge until the power is back; a check that the page is English only; the first screen and **Try a demo day**; and the form checks (a negative number or an empty name shows a message and is not used).
+
+## Form checks
+
+Kit numbers must be inside fixed ranges: capacity 0–5000 Wh, charge and use 0–3000 W, charge level 0–100 %. A name must be 1–40 characters. A wrong value shows a plain message under the field, and the plan keeps the last valid value. The schedule box takes up to 1000 characters; a line it cannot read is named, and the other lines still count. Limits live in `src/domain/validate.ts`.
 
 ## Pages
 

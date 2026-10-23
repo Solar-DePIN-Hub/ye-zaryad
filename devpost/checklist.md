@@ -19,7 +19,7 @@ Gut check, recorded rather than asked live: the order below puts a visible sched
   PRD ref: `prd.md > Schedule hours`, `prd.md > The Core Journey`
   Spec ref: `spec.md > Schedule parser`, `spec.md > Hour toggles`, `spec.md > File Structure`
   Build: Scaffold Vite, React, and TypeScript. Add the schedule parser, hour toggle, sample button, chips, and the strings module. Style the dark column far enough that the page is readable.
-  Verify (mechanical): `npm test` covers the parser cases (separators, з…до, 24:00, overnight, overlaps, garbage, empty). `npm run lint` passes. The dev server starts.
+  Verify (mechanical): `npm test` covers the parser cases (separators, the from…to form (the Ukrainian wording was replaced on Oct 23), 24:00, overnight, overlaps, garbage, empty). `npm run lint` passes. The dev server starts.
   Learner check: Open the page, paste a line, tap an hour, and see whether the chips match the hours you meant.
   Commit: `Show outage hours from pasted text or a tapped hour`
 
@@ -101,3 +101,12 @@ Activity mode: reference route. Learner absent.
 - The six slices share one page, so they landed in one application commit rather than six checkouts. The `Commit:` lines above are the slice notes. The git history still separates the skill pack, the planning docs, the app, and the shipping files.
 - Warning lines listed the same device once per outage, including the next morning. The red block now keeps the first time each device runs out. The simulation itself did not change. `tests/plan.test.ts` still requires a death without the station and none with it.
 - Fast mode and the hands-on boxes were completed by the agent. Vadym did not click through the page.
+
+## Post-ship revisions (Oct 23, 2026)
+
+- [x] English only, renamed Charge Ahead (commit b1075d8).
+- [x] "Power is off now" warning wording (commit a3f8fe0).
+- [x] First screen: who it is for, three steps, Try a demo day / Start over.
+- [x] Form validation with inline messages; saved data repaired on load.
+- [x] Two-column layout on wide screens.
+- Verify (mechanical): `npm run lint`, `npm test` (39 passing), `npm run test:e2e` (6 passing), `npm run build`.

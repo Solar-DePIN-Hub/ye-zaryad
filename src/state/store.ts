@@ -1,4 +1,5 @@
 import type { KitItem } from "../domain/types";
+import { KIT_MAX, SCHEDULE_MAX, sanitizeItem } from "../domain/validate";
 
 export interface SavedPlan {
   version: 1;
@@ -34,8 +35,8 @@ export function loadPlan(storage: Storage | null = safeStorage()): SavedPlan | n
     }
     return {
       version: 1,
-      scheduleText: data.scheduleText,
-      items: data.items.filter(isItem),
+      scheduleText: data.scheduleText.slice(0, SCHEDULE_MAX),
+      items: data.items.filter(isItem).slice(0, KIT_MAX).map(sanitizeItem),
       checkedActionIds: Array.isArray(data.checkedActionIds)
         ? data.checkedActionIds.filter((id): id is string => typeof id === "string")
         : [],
