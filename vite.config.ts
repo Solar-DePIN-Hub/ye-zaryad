@@ -13,8 +13,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "icons/*.png"],
       manifest: {
-        name: "Є заряд",
-        short_name: "Є заряд",
+        name: "Charge Ahead: blackout charging planner",
+        short_name: "Charge Ahead: blackout charging planner",
         description: "See what will run out of charge, and what to charge by when.",
         theme_color: "#0E1726",
         background_color: "#0E1726",

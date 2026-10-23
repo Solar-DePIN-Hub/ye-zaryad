@@ -15,11 +15,11 @@ export interface ParseResult {
   errors: ParseError[];
 }
 
-export const SAMPLE_SCHEDULE = "SAMPLE\n08:00–12:00\nз 16:00 до 20:00\n";
+export const SAMPLE_SCHEDULE = "SAMPLE\n08:00–12:00\nfrom 16:00 to 20:00\n";
 
 const TIME = String.raw`(?:24(?::00|\.00)?|(?:[01]?\d|2[0-3])(?:[:.][0-5]\d)?)`;
 const RANGE_RE = new RegExp(
-  String.raw`(?<![\d:.])(?:(?:з|із|from)\s+)?(${TIME})\s*(?:-|–|—|до|to)\s*(${TIME})(?![\d:.])`,
+  String.raw`(?<![\d:.])(?:from\s+)?(${TIME})\s*(?:-|–|—|to)\s*(${TIME})(?![\d:.])`,
   "giu",
 );
 

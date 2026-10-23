@@ -25,8 +25,8 @@ describe("parseSchedule", () => {
     expect(parseSchedule("8-12").blocks).toEqual([{ startMin: 480, endMin: 720 }]);
   });
 
-  it("reads Ukrainian з…до", () => {
-    expect(parseSchedule("з 16:00 до 20:00").blocks).toEqual([{ startMin: 960, endMin: 1200 }]);
+  it("reads from…to", () => {
+    expect(parseSchedule("from 16:00 to 20:00").blocks).toEqual([{ startMin: 960, endMin: 1200 }]);
   });
 
   it("reads several lines", () => {
@@ -60,7 +60,7 @@ describe("parseSchedule", () => {
   });
 
   it("reports a garbage line and keeps a good one", () => {
-    const result = parseSchedule("08:00–12:00\nmaybe around 7ish\nз 16:00 до 20:00");
+    const result = parseSchedule("08:00–12:00\nmaybe around 7ish\nfrom 16:00 to 20:00");
     expect(result.blocks).toHaveLength(2);
     expect(result.errors).toEqual([{ line: 2, text: "maybe around 7ish" }]);
   });
@@ -71,8 +71,8 @@ describe("parseSchedule", () => {
   });
 
   it("ignores a heading with no digits", () => {
-    expect(parseSchedule("SAMPLE\nГрафік").blocks).toEqual([]);
-    expect(parseSchedule("SAMPLE\nГрафік").errors).toEqual([]);
+    expect(parseSchedule("SAMPLE\nSchedule").blocks).toEqual([]);
+    expect(parseSchedule("SAMPLE\nSchedule").errors).toEqual([]);
   });
 
   it("reads dotted times", () => {

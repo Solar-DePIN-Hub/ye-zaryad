@@ -39,7 +39,7 @@ function card(title, body) {
 const hold = (ms) => page.waitForTimeout(ms);
 
 await beat("Ukraine, winter 2026:\nscheduled blackouts, every day.", async () => {
-  await page.setContent(card("Є заряд", "What will go dead, and what to charge by when."));
+  await page.setContent(card("Charge Ahead", "What will go dead, and what to charge by when."));
   await hold(7000);
 });
 
@@ -55,7 +55,7 @@ await beat("Paste your outage schedule.\nAny common format.", async () => {
   await page.evaluate(() => localStorage.clear());
   await page.goto("http://127.0.0.1:4173/?now=12:00", { waitUntil: "networkidle" });
   await hold(1500);
-  await page.locator("#schedule-text").fill("SAMPLE\n08:00–12:00\nз 16:00 до 20:00\n");
+  await page.locator("#schedule-text").fill("SAMPLE\n08:00–12:00\nfrom 16:00 to 20:00\n");
   await hold(5000);
 });
 
@@ -110,7 +110,7 @@ await beat("Works offline.\nDuring a blackout, the internet goes too.", async ()
   await page.waitForFunction(() => navigator.serviceWorker.ready);
   await context.setOffline(true);
   await page.reload({ waitUntil: "domcontentloaded" });
-  await page.getByRole("heading", { name: "Є заряд" }).waitFor();
+  await page.getByRole("heading", { name: "Charge Ahead" }).waitFor();
   await hold(7000);
   await context.setOffline(false);
 });

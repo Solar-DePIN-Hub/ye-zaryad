@@ -11,7 +11,7 @@ import type { KitItem } from "./domain/types";
 import { floorToStep, minutesOfDay } from "./domain/time";
 import { readNow } from "./state/clock";
 import { loadPlan, savePlan } from "./state/store";
-import { strings, switchLanguage } from "./strings";
+import { strings } from "./strings";
 
 export function App() {
   const saved = useMemo(() => loadPlan(), []);
@@ -55,15 +55,7 @@ export function App() {
       <header className="header">
         <div className="brand">
           <span className="mark" aria-hidden="true" />
-          <p className="eyebrow">{strings.latinName}</p>
-          <button
-            type="button"
-            className="lang-switch"
-            onClick={switchLanguage}
-            aria-label={strings.switchLanguageLabel}
-          >
-            {strings.switchLanguage}
-          </button>
+          <p className="eyebrow">{strings.eyebrow}</p>
         </div>
         <h1>{strings.appName}</h1>
         <p className="tagline">{strings.tagline}</p>

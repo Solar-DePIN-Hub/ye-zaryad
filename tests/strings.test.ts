@@ -1,31 +1,28 @@
 import { describe, expect, it } from "vitest";
-import { dictionaries, pickLang } from "../src/strings";
+import { strings } from "../src/strings";
+import { SAMPLE_SCHEDULE } from "../src/domain/parseSchedule";
 
-describe("languages", () => {
-  it("has a Ukrainian line for every English line", () => {
-    const en = dictionaries.en as Record<string, unknown>;
-    const uk = dictionaries.uk as Record<string, unknown>;
-    expect(Object.keys(uk).sort()).toEqual(Object.keys(en).sort());
-    for (const key of Object.keys(en)) {
-      expect(typeof uk[key]).toBe(typeof en[key]);
-      if (typeof en[key] === "string" && !["latinName", "appName", "schedulePlaceholder"].includes(key)) {
-        expect(uk[key], key).not.toBe(en[key]);
-      }
-    }
-    expect(Object.keys(dictionaries.uk.presetNames).sort()).toEqual(Object.keys(dictionaries.en.presetNames).sort());
+function allText(value: unknown): string[] {
+  if (typeof value === "string") return [value];
+  if (typeof value === "function") return [String((value as (...a: string[]) => string)("X", "Y"))];
+  if (value && typeof value === "object") return Object.values(value).flatMap(allText);
+  return [];
+}
+
+describe("copy", () => {
+  it("is English only, with no Cyrillic anywhere on the page", () => {
+    const texts = [...allText(strings), SAMPLE_SCHEDULE];
+    expect(texts.length).toBeGreaterThan(50);
+    for (const text of texts) expect(text, text).not.toMatch(/[\u0400-\u04FF]/);
   });
 
-  it("picks the URL first, then the saved choice, then the browser", () => {
-    expect(pickLang("?lang=uk", "en", "en-US")).toBe("uk");
-    expect(pickLang("", "uk", "en-US")).toBe("uk");
-    expect(pickLang("", null, "uk-UA")).toBe("uk");
-    expect(pickLang("", null, "en-GB")).toBe("en");
-    expect(pickLang("?lang=xx", null, undefined)).toBe("en");
+  it("writes the warning and the charge list as plain sentences", () => {
+    expect(strings.runsOut("Router", "18:15")).toBe("Router runs out at 18:15.");
+    expect(strings.chargeBy("Power bank", "15:15")).toBe("Charge Power bank by 15:15");
   });
 
-  it("writes Ukrainian sentences that do not need noun cases", () => {
-    expect(dictionaries.uk.chargeBy("Зарядна станція", "15:15")).toBe("Заряди до 15:15: Зарядна станція");
-    expect(dictionaries.uk.runsOut("Роутер", "18:15")).toBe("Роутер сяде о 18:15.");
-    expect(dictionaries.uk.chargeFirstWhenBack("Павербанк")).toBe("Коли дадуть світло, спершу заряди: Павербанк.");
+  it("says nothing can charge while the power is off", () => {
+    expect(strings.offNow("12:00")).toBe("The power is off now. It is due back at 12:00, so nothing can charge before then.");
+    expect(strings.chargeFirstWhenBack("Power bank")).toBe("When the power is back, charge this first: Power bank.");
   });
 });

@@ -2,7 +2,7 @@
   "name": "ye-zaryad",
   "private": true,
   "version": "0.1.0",
-  "description": "Є заряд — see what will run out of charge in a blackout, and what to charge by when.",
+  "description": "Charge Ahead: see what will run out of charge in a blackout, and what to charge by when.",
   "type": "module",
   "scripts": {
     "dev": "vite",

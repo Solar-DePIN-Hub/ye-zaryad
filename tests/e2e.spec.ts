@@ -37,22 +37,8 @@ test("still opens after the network drops", async ({ page, context }) => {
   await page.waitForFunction(() => navigator.serviceWorker.ready);
   await context.setOffline(true);
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Є заряд" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Charge Ahead" })).toBeVisible();
   await expect(page.getByRole("list", { name: "Outages" })).toContainText("08:00–12:00");
-});
-
-test("switches to Ukrainian and keeps the choice", async ({ page }) => {
-  await page.getByRole("button", { name: "Switch the page to Ukrainian" }).click();
-  await expect(page.locator("html")).toHaveAttribute("lang", "uk");
-  await page.getByRole("button", { name: "Взяти приклад графіка (ПРИКЛАД)" }).click();
-  await page.getByRole("button", { name: "Додати типовий набір (оцінка)" }).click();
-  await expect(page.getByRole("alert")).toContainText(/сяде о/);
-  await expect(page.getByRole("alert")).toContainText(/Спершу заряди/);
-  await expect(page.getByLabel("Назва").first()).toHaveValue("Роутер");
-  await page.goto("/?now=12:00");
-  await expect(page.getByRole("heading", { name: "Що в тебе є" })).toBeVisible();
-  await page.getByRole("button", { name: "Перемкнути сторінку на англійську" }).click();
-  await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
 
 test("says when nothing can charge because the power is already off", async ({ page }) => {
@@ -61,4 +47,13 @@ test("says when nothing can charge because the power is already off", async ({ p
   await page.getByRole("button", { name: "Add typical kit (estimates)" }).click();
   await expect(page.getByRole("alert")).toContainText("The power is off now. It is due back at 12:00");
   await expect(page.getByRole("alert")).toContainText(/When the power is back, charge this first/);
+});
+
+test("is English only", async ({ page }) => {
+  await page.getByRole("button", { name: "Use sample schedule (SAMPLE)" }).click();
+  await page.getByRole("button", { name: "Add typical kit (estimates)" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("heading", { name: "Charge Ahead" })).toBeVisible();
+  expect(await page.locator("body").innerText()).not.toMatch(/[\u0400-\u04FF]/);
+  expect(await page.title()).toBe("Charge Ahead");
 });
