@@ -1,3 +1,4 @@
+import { strings } from "../strings";
 export const MINUTES_PER_DAY = 1440;
 export const STEP_MIN = 15;
 
@@ -22,9 +23,9 @@ export function formatDuration(totalMinutes: number): string {
   const mins = Math.max(0, Math.round(totalMinutes));
   const hours = Math.floor(mins / 60);
   const minutes = mins % 60;
-  if (hours > 0 && minutes > 0) return `${hours} h ${minutes} min`;
-  if (hours > 0) return `${hours} h`;
-  return `${minutes} min`;
+  if (hours > 0 && minutes > 0) return `${hours} ${strings.hourShort} ${minutes} ${strings.minuteShort}`;
+  if (hours > 0) return `${hours} ${strings.hourShort}`;
+  return `${minutes} ${strings.minuteShort}`;
 }
 
 /** Local date at an absolute minute count from today's midnight. Values past 1440 roll into the next day. */

@@ -40,3 +40,17 @@ test("still opens after the network drops", async ({ page, context }) => {
   await expect(page.getByRole("heading", { name: "Є заряд" })).toBeVisible();
   await expect(page.getByRole("list", { name: "Outages" })).toContainText("08:00–12:00");
 });
+
+test("switches to Ukrainian and keeps the choice", async ({ page }) => {
+  await page.getByRole("button", { name: "Switch the page to Ukrainian" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "uk");
+  await page.getByRole("button", { name: "Взяти приклад графіка (ПРИКЛАД)" }).click();
+  await page.getByRole("button", { name: "Додати типовий набір (оцінка)" }).click();
+  await expect(page.getByRole("alert")).toContainText(/сяде о/);
+  await expect(page.getByRole("alert")).toContainText(/Спершу заряди/);
+  await expect(page.getByLabel("Назва").first()).toHaveValue("Роутер");
+  await page.goto("/?now=12:00");
+  await expect(page.getByRole("heading", { name: "Що в тебе є" })).toBeVisible();
+  await page.getByRole("button", { name: "Перемкнути сторінку на англійську" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+});

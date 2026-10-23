@@ -4,7 +4,7 @@ A browser page that reads outage hours, looks at the devices you own, and says w
 
 ![Sample day at noon, with the red warning](docs/ye-zaryad.png)
 
-The interface is English. There is no account and no server. After the first load the page opens offline. Preset wattages are typical estimates, not measurements of a real device. Schedules are typed or tapped. Nothing is fetched from a power company.
+The interface is English or Ukrainian (button in the header, or `?lang=uk`; a phone set to Ukrainian opens in Ukrainian). There is no account and no server. After the first load the page opens offline. Preset wattages are typical estimates, not measurements of a real device. Schedules are typed or tapped. Nothing is fetched from a power company.
 
 MIT License. Copyright (c) 2026 Vadym Bilobrovets.
 
@@ -49,15 +49,17 @@ npm run test:e2e
 npm run build
 ```
 
-`npm test` is Vitest (parser, watt-hour conversion, simulation, calendar file). `npm run test:e2e` is one Playwright Chromium pass: sample schedule, typical kit, a "runs out" warning, an `.ics` download, reload, and an offline reload.
+`npm test` is Vitest, 35 tests (parser, watt-hour conversion, simulation, calendar file, and a check that every English line has a Ukrainian one). `npm run test:e2e` is three Playwright Chromium tests: sample schedule, typical kit, a "runs out" warning, an `.ics` download and reload; an offline reload; and switching to Ukrainian and back.
 
 ## Pages
 
 GitHub Actions (`.github/workflows/deploy.yml`) runs lint, unit tests, the browser test, and the production build on pull requests and on `main`. A push to `main` also publishes `dist/` to GitHub Pages with Vite base `/ye-zaryad/`.
 
-Intended site: `https://solar-depin-hub.github.io/ye-zaryad/`
+Live site: https://solar-depin-hub.github.io/ye-zaryad/
 
-That URL stays down until GitHub Pages is turned on for this repository with GitHub Actions as the source. On an organization repository that is an organization setting. The app does not need the site to run locally, and the demo video does not depend on it.
+## Languages
+
+All copy is in `src/strings.ts`: one English and one Ukrainian dictionary with the same keys. Ukrainian lines put the device name after a colon ("Заряди до 15:15: Павербанк"), so no noun has to change its case. The calendar reminders use the page language. Added on 23 October 2026, after the first submission. Vadym listed "Ukrainian language" under What's next.
 
 ## Assumptions
 

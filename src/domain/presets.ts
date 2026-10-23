@@ -1,3 +1,4 @@
+import { strings } from "../strings";
 import type { KitItem } from "./types";
 import { mahToWh } from "./units";
 
@@ -12,9 +13,9 @@ const powerBankWh = mahToWh(20000);
 export const presets: Preset[] = [
   {
     id: "router",
-    label: "Router",
+    label: strings.presetNames["router"],
     item: {
-      name: "Router",
+      name: strings.presetNames["router"],
       capacityWh: 0,
       chargeW: 0,
       drawW: 12,
@@ -24,9 +25,9 @@ export const presets: Preset[] = [
   },
   {
     id: "laptop",
-    label: "Laptop",
+    label: strings.presetNames["laptop"],
     item: {
-      name: "Laptop",
+      name: strings.presetNames["laptop"],
       capacityWh: 60,
       chargeW: 60,
       drawW: 45,
@@ -36,9 +37,9 @@ export const presets: Preset[] = [
   },
   {
     id: "phone",
-    label: "Phone",
+    label: strings.presetNames["phone"],
     item: {
-      name: "Phone",
+      name: strings.presetNames["phone"],
       capacityWh: 12,
       chargeW: 18,
       drawW: 3,
@@ -48,9 +49,9 @@ export const presets: Preset[] = [
   },
   {
     id: "flashlight",
-    label: "Flashlight",
+    label: strings.presetNames["flashlight"],
     item: {
-      name: "Flashlight",
+      name: strings.presetNames["flashlight"],
       capacityWh: 8,
       chargeW: 5,
       drawW: 3,
@@ -60,9 +61,9 @@ export const presets: Preset[] = [
   },
   {
     id: "power-bank",
-    label: "Power bank",
+    label: strings.presetNames["power-bank"],
     item: {
-      name: "Power bank",
+      name: strings.presetNames["power-bank"],
       capacityWh: round1(powerBankWh),
       chargeW: 60,
       drawW: 0,
@@ -73,9 +74,9 @@ export const presets: Preset[] = [
   },
   {
     id: "station",
-    label: "Charging station",
+    label: strings.presetNames["station"],
     item: {
-      name: "Charging station",
+      name: strings.presetNames["station"],
       capacityWh: 512,
       chargeW: 300,
       drawW: 0,

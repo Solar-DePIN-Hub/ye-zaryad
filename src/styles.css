@@ -399,3 +399,21 @@ textarea { min-height: 96px; resize: vertical; }
     stroke-dashoffset: 0;
   }
 }
+
+.lang-switch {
+  margin-left: auto;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 6px 12px;
+  min-height: 36px;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.lang-switch:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
