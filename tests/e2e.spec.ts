@@ -54,3 +54,11 @@ test("switches to Ukrainian and keeps the choice", async ({ page }) => {
   await page.getByRole("button", { name: "Перемкнути сторінку на англійську" }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
 });
+
+test("says when nothing can charge because the power is already off", async ({ page }) => {
+  await page.goto("/?now=09:00");
+  await page.getByRole("button", { name: "Use sample schedule (SAMPLE)" }).click();
+  await page.getByRole("button", { name: "Add typical kit (estimates)" }).click();
+  await expect(page.getByRole("alert")).toContainText("The power is off now. It is due back at 12:00");
+  await expect(page.getByRole("alert")).toContainText(/When the power is back, charge this first/);
+});

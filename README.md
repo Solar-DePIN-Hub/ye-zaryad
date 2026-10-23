@@ -49,7 +49,7 @@ npm run test:e2e
 npm run build
 ```
 
-`npm test` is Vitest, 35 tests (parser, watt-hour conversion, simulation, calendar file, and a check that every English line has a Ukrainian one). `npm run test:e2e` is three Playwright Chromium tests: sample schedule, typical kit, a "runs out" warning, an `.ics` download and reload; an offline reload; and switching to Ukrainian and back.
+`npm test` is Vitest, 35 tests (parser, watt-hour conversion, simulation, calendar file, and a check that every English line has a Ukrainian one). `npm run test:e2e` is four Playwright Chromium tests: sample schedule, typical kit, a "runs out" warning, an `.ics` download and reload; an offline reload; switching to Ukrainian and back; and the "power is off now" case, where the page says nothing can charge until the power is back.
 
 ## Pages
 

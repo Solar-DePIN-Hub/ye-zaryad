@@ -26,5 +26,6 @@ describe("languages", () => {
   it("writes Ukrainian sentences that do not need noun cases", () => {
     expect(dictionaries.uk.chargeBy("Зарядна станція", "15:15")).toBe("Заряди до 15:15: Зарядна станція");
     expect(dictionaries.uk.runsOut("Роутер", "18:15")).toBe("Роутер сяде о 18:15.");
+    expect(dictionaries.uk.chargeFirstWhenBack("Павербанк")).toBe("Коли дадуть світло, спершу заряди: Павербанк.");
   });
 });

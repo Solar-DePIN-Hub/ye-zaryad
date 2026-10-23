@@ -35,6 +35,9 @@ export function Warnings({ hasSchedule, hasKit, result }: Props) {
   }
 
   const first = result.chargeFirst;
+  // If the power is already off, charging advice only applies once it is back.
+  const offNow = result.steps.length > 0 && !result.steps[0].gridOn;
+  const back = offNow ? result.steps.find((step) => step.gridOn) : undefined;
   const time = first ? formatClock(first.atMin) : "";
   const seen = new Set<string>();
   if (first) seen.add(first.becauseId);
@@ -49,9 +52,11 @@ export function Warnings({ hasSchedule, hasKit, result }: Props) {
   return (
     <section className="alert bad" role="alert" aria-labelledby="warn-title">
       <strong id="warn-title">{strings.warningTitle}</strong>
+      {offNow && <p>{back ? strings.offNow(formatClock(back.clockMin)) : strings.offAllDay}</p>}
       {first && (
         <p>
-          {strings.runsOut(first.becauseName, time)} {strings.chargeFirst(first.name)}
+          {strings.runsOut(first.becauseName, time)}{" "}
+          {offNow ? (back ? strings.chargeFirstWhenBack(first.name) : null) : strings.chargeFirst(first.name)}
         </p>
       )}
       {others.map((death) => (
